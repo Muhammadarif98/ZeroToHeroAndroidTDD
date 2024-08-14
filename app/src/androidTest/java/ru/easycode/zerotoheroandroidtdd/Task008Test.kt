@@ -52,6 +52,7 @@ class Task008Test {
         onView(withId(R.id.hideButton)).perform(ViewActions.click())
         onView(withId(R.id.titleTextView)).check(matches(not(isDisplayed())))
 
+
         activityScenarioRule.scenario.recreate()
         onView(withId(R.id.titleTextView)).check(matches(not(isDisplayed())))
     }
