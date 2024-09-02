@@ -21,38 +21,38 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
-class Task009Test {
+    @RunWith(AndroidJUnit4::class)
+    class Task009Test {
 
-    @get:Rule
-    var activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
+        @get:Rule
+        var activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
-    @Test
-    fun test_remove_textview() {
-        onView(
-            allOf(
-                isAssignableFrom(TextView::class.java),
-                withId(R.id.titleTextView),
-                withText("Hello World!"),
-                withParent(isAssignableFrom(LinearLayout::class.java)),
-                withParent(withId(R.id.rootLayout))
-            )
-        ).check(matches(isDisplayed()))
+        @Test
+        fun test_remove_textview() {
+            onView(
+                allOf(
+                    isAssignableFrom(TextView::class.java),
+                    withId(R.id.titleTextView),
+                    withText("Hello World!"),
+                    withParent(isAssignableFrom(LinearLayout::class.java)),
+                    withParent(withId(R.id.rootLayout))
+                )
+            ).check(matches(isDisplayed()))
 
-        onView(
-            allOf(
-                withId(R.id.removeButton),
-                withText("remove"),
-                isAssignableFrom(Button::class.java),
-                withParent(isAssignableFrom(LinearLayout::class.java)),
-                withParent(withId(R.id.rootLayout))
-            )
-        ).check(isCompletelyBelow(withId(R.id.titleTextView)))
+            onView(
+                allOf(
+                    withId(R.id.removeButton),
+                    withText("remove"),
+                    isAssignableFrom(Button::class.java),
+                    withParent(isAssignableFrom(LinearLayout::class.java)),
+                    withParent(withId(R.id.rootLayout))
+                )
+            ).check(isCompletelyBelow(withId(R.id.titleTextView)))
 
-        onView(withId(R.id.removeButton)).perform(click())
-        onView(withId(R.id.titleTextView)).check(doesNotExist())
+            onView(withId(R.id.removeButton)).perform(click())
+            onView(withId(R.id.titleTextView)).check(doesNotExist())
 
-        activityScenarioRule.scenario.recreate()
-        onView(withId(R.id.titleTextView)).check(doesNotExist())
+            activityScenarioRule.scenario.recreate()
+            onView(withId(R.id.titleTextView)).check(doesNotExist())
+        }
     }
-}
