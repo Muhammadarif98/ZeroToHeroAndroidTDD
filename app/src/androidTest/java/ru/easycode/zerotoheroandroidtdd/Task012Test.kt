@@ -54,14 +54,23 @@ class Task012Test {
         ).check(isCompletelyRightOf(withId(R.id.countTextView)))
 
         onView(withId(R.id.incrementButton)).perform(click())
-        onView(withId(R.id.countTextView)).check(matches(withText("2")))
+        onView(withId(R.id.countTextView)).check(matches(withText("5")))
 
         onView(withId(R.id.incrementButton)).perform(click())
-        onView(withId(R.id.countTextView)).check(matches(withText("4")))
+        onView(withId(R.id.countTextView)).check(matches(withText("10")))
         onView(withId(R.id.incrementButton)).check(matches(isNotEnabled()))
 
         activityScenarioRule.scenario.recreate()
-        onView(withId(R.id.countTextView)).check(matches(withText("4")))
+        onView(withId(R.id.countTextView)).check(matches(withText("10")))
         onView(withId(R.id.incrementButton)).check(matches(isNotEnabled()))
     }
 }
+    /**
+     * этот файл теста проверяет что:
+     *  - можно инкрементировать счетчик на 1
+     *  - можно инкрементировать счетчик на 10
+     *  - нельзя инициализировать счетчик со значением -5
+     *  - нельзя инициализировать счетчик со значением -10
+     *  - exception имеет сообщение "step should be positive, but was -5"
+     *  - exception имеет сообщение "step should be positive, but was -10"
+     */
