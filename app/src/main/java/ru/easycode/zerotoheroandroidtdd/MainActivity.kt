@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textView: TextView
     private lateinit var linearLayout: LinearLayout
     private lateinit var button: Button
-
+    private val count = Count.Base(step = 2)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -20,7 +20,8 @@ class MainActivity : AppCompatActivity() {
         button = findViewById(R.id.incrementButton)
 
         button.setOnClickListener {
-            textView.text = Count.Base(step = 2).increment(number = textView.text.toString())
+            val result = count.increment(number = textView.text.toString())
+            textView.text = result
         }
 
         if (savedInstanceState == null) {
