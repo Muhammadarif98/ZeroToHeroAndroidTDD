@@ -1,17 +1,21 @@
 package ru.easycode.zerotoheroandroidtdd
 
 import android.annotation.SuppressLint
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 
 class MainActivity : AppCompatActivity() {
     private lateinit var textView: TextView
     private lateinit var linearLayout: LinearLayout
     private lateinit var button: Button
-    private lateinit var count: Count
+
+    private val count = Count.Base(step = 5,max =10)
+    private var uiState: UiState = UiState.Base("0")
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,42 +26,25 @@ class MainActivity : AppCompatActivity() {
         linearLayout = findViewById(R.id.rootLayout)
         button = findViewById(R.id.incrementButton)
 
-        count = Count.Base(step = 5, max = 10)
-
         button.setOnClickListener {
-            val result = count.increment(number = textView.text.toString())
-            textView.text = when (result) {
-                is UiState.Base -> result.text
-                is UiState.Max -> {
-                    button.isEnabled = false
-                    result.text
-                }
-
-                else -> ({}).toString()
-            }
-        }
-
-        if (savedInstanceState == null) {
-            textView.text = "0"
-        } else {
-            textView.text = savedInstanceState.getString("count")
-            if (textView.text.toString().toInt() >= 4) {
-                button.isEnabled = false
-            }
+            uiState = count.increment(number = textView.text.toString())
+            uiState.apply(textView,button)
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("count", textView.text.toString())
+        outState.putSerializable(KEY,uiState)
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        textView.text = savedInstanceState.getString("count")
-        if (textView.text.toString().toInt() >= 4) {
-            button.isEnabled = false
-        }
+        uiState = savedInstanceState.getSerializable(KEY,UiState::class.java) as UiState
+        uiState.apply(textView,button)
+    }
+    companion object{
+        private val KEY = "uiStateKey"
     }
 }
 
